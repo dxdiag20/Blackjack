@@ -421,7 +421,7 @@
 <div class="page" id="login">
     <div>
         <div class="buttons"><div class="btn" id="naver_login_button">Sign in with Naver</div></div>
-        <div class="buttons"><div class="btn" id="github_login_button">Github 로그인</div></div>
+        <!--<div class="buttons"><div class="btn" id="github_login_button">Github 로그인</div></div>-->
     </div>
 </div>
 <div class="page" id="lobby" style="display: none">
@@ -522,14 +522,12 @@
         if (event.which != 13) {
             return;
         }
-        console.log("work");
         $.ajax({
             type: 'PUT',
             url: '/api/black-jack/rooms/' + gameRoomId + '/deck/cards',
             data: JSON.stringify(event.target.value),
             contentType: 'application/json;',
         }).done(function (data) {
-            console.log("work2");
             drawGameRoom(data);
         });
     })
@@ -543,7 +541,7 @@
     })
 
     $('#more').click(function(){
-        var bet = 100;
+        var bet = 1000;
         var currentBet = parseInt($('#bet').html());
         var money = parseInt($('#money').html());
         if (money < bet) {
