@@ -62,21 +62,27 @@ public class GameRoom {
         player.hitCard();
 
         if( player.getHand().getCardSum() > 21 ) {
-            player.stand();
+            this.stand(name);
             playDealer();
         }
     }
 
     public void stand(String name) {
         Player player = playerList.get(name);
-
         player.stand();
+        this.refreshCard();
     }
 
     public void playDealer() {
         dealer.play();
         evaluator.evaluate();
         this.isFinished = true;
+    }
+
+    public void refreshCard() {
+        if (this.deck.getCardList().size() <= 10) {
+            this.deck.refreshCard();
+        }
     }
 
 }
