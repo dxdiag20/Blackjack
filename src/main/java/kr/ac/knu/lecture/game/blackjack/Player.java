@@ -30,7 +30,8 @@ public class Player {
 
     public void placeBet(long bet) {
         if (balance < bet) {
-            throw new NotEnoughBalanceException();
+            //throw new NotEnoughBalanceException();
+            bet = balance;
         }
         balance -= bet;
         currentBet = bet;
@@ -45,16 +46,13 @@ public class Player {
 
     public void win() {
         balance += currentBet * 2;
-        currentBet = 0;
     }
 
     public void tie() {
         balance += currentBet;
-        currentBet = 0;
     }
 
     public void lost() {
-        currentBet = 0;
     }
 
     public Card hitCard() {
