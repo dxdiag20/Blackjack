@@ -88,6 +88,8 @@ public class BlackjackService {
 
                 userRepository.save(playUser);
             });
+
+            System.out.println("userList"+userRepository.findAll());
         }
     }
 
