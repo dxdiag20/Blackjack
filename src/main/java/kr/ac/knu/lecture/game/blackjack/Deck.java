@@ -48,4 +48,10 @@ public class Deck {
     public void addNextCard(int rank) {
         cardList.add(0, new Card(rank, Suit.SPADES));
     }
+
+    public void refreshCard() {
+        this.cardList.clear();
+        createCards(number);
+        Collections.shuffle(cardList);
+    }
 }
