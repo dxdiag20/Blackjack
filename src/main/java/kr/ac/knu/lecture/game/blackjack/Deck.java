@@ -50,7 +50,6 @@ public class Deck {
     }
 
     public void refreshCard() {
-        this.cardList.clear();
         createCards(number);
         Collections.shuffle(cardList);
     }

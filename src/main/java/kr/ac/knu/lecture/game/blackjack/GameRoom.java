@@ -70,7 +70,7 @@ public class GameRoom {
     public void stand(String name) {
         Player player = playerList.get(name);
         player.stand();
-        this.refreshCard();
+        this.deck.refreshCard();
     }
 
     public void playDealer() {
@@ -78,11 +78,4 @@ public class GameRoom {
         evaluator.evaluate();
         this.isFinished = true;
     }
-
-    public void refreshCard() {
-        if (this.deck.getCardList().size() <= 10) {
-            this.deck.refreshCard();
-        }
-    }
-
 }
