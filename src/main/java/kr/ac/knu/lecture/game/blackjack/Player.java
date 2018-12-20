@@ -44,15 +44,18 @@ public class Player {
         hand.drawCard();
     }
 
-    public void win() {
-        balance += currentBet * 2;
+    public void win(double rate) {
+        balance += currentBet * rate;
+        System.out.println("winning = [" + currentBet * rate + "]");
     }
 
     public void tie() {
         balance += currentBet;
+        System.out.println("tie = [" + currentBet + "]");
     }
 
     public void lost() {
+        System.out.println("lost");
     }
 
     public Card hitCard() {
