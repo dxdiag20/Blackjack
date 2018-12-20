@@ -50,7 +50,9 @@ public class Deck {
     }
 
     public void refreshCard() {
-        createCards(number);
-        Collections.shuffle(cardList);
+        if(cardList.size() <= 10) {
+            createCards(number);
+            Collections.shuffle(cardList);
+        }
     }
 }
