@@ -31,6 +31,8 @@ public class Evaluator {
             int playerResult = player.getHand().getCardSum();
             if (playerResult > 21) {
                 player.lost();
+            } else if(playerResult == 21 && playerResult > dealerResult) {
+                player.win();
             } else if (playerResult > dealerResult) {
                 player.win();
             } else if (playerResult == dealerResult) {
