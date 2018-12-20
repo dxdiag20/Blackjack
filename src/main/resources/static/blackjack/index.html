@@ -579,9 +579,12 @@
         if (money < bet) {
             bet = money;
         }
-
-        $('#bet').html(currentBet + bet);
-        $('#money').html(money - bet);
+        if (currentBet + bet > 10000) {
+            $('#bet').html(10000);
+        } else {
+            $('#bet').html(currentBet + bet);
+            $('#money').html(money - bet);
+        }
     });
 
     $('#less').click(function(){
