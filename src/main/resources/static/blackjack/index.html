@@ -2,6 +2,7 @@
 <html lang="en">
 <link rel="stylesheet" href="/blackjack/bootstrap.css">
 <link rel="stylesheet" href="/blackjack/loginForm.css">
+<link rel="stylesheet" href="/blackjack/colorBox.css">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -70,15 +71,15 @@
         text-align: center;
     }
 
-    .dealer-cards .card, .player-cards .card {
+    .dealer-cards .blackcard, .player-cards .blackcard {
         margin-left: 5px;
     }
 
-    .dealer-cards .card:first-child, .player-cards .card:first-child{
+    .dealer-cards .blackcard:first-child, .player-cards .blackcard:first-child{
         margin-left: 0;
     }
 
-    .new-cards .card:first-child{
+    .new-cards .blackcard:first-child{
         margin-left: 5px;
     }
 
@@ -94,7 +95,7 @@
     }
 
     .buttons{
-        width: 210px;
+        width: 400px;
         margin: 20px auto 0 auto;
     }
 
@@ -106,7 +107,7 @@
     .gameBtn {
         font: bold 13px "Helvetica Neue", Helvetica, Arial, clean, sans-serif !important;
         text-shadow: 0 -1px 1px rgba(0,0,0,0.25), -2px 0 1px rgba(0,0,0,0.25);
-        border-radius: 5px;
+        border-radius: 4px;
         -moz-border-radius: 5px;
         -webkit-border-radius: 5px;
         -moz-box-shadow: 0 1px 2px rgba(0,0,0,0.5);
@@ -147,7 +148,7 @@
         -webkit-box-shadow: none;
     }
 
-    .card {
+    .blackcard {
         background-image: url(/blackjack/cards.png);
         float: left;
         height: 123px;
@@ -412,14 +413,35 @@
 </head>
 <body>
 <div class="container">
-<div class="row" style="height: 100px; width: 100%; background-color: #EEFFEE; opacity: 0.7">
-    <div class="col">
-    <input type="text" size="2" id="nextCardInput" />
-    <div id="nextCards"></div>
+<div class="row" id="backdore" style="display: none;">
+<!--    <div class="col purple-grad color-box">
+    <input type="text" size="3" id="nextCardInput" />
+    <div class="col" id="nextCards"></div>
+    </div>-->
+    <div class="col card text-white bg-primary mb-3" style="max-width: 100%;">
+    <div class="card-header">FirstCard <input type="text" size="3" id="nextCardInput" /></div>
+    <div class="card-body">
+        <p class="card-text" id="nextCards"></p>
     </div>
+    </div>
+       
+    <div class="col card text-white bg-primary mb-3" style="max-width: 30%;">
+    <div class="card-header">Ranking</div>
+    <div class="card-body">
+        <p class="card-text"></p>
+    </div>
+    </div>
+
+    <div class="col card text-white bg-primary mb-3" style="max-width: 20%;">
+    <div class="card-header" id="username">Username</div>
+    <div class="card-body">
+        <h5 class="card-title">My Balance</h5>
+        <p class="card-text" id="balance"></p>
+    </div>
+    </div>    
 </div>
-<div class="row" id="socialLogin" style="margin: auto; max-width: 50%">
-    <div class="col">
+<div id="socialLogin" style="padding-top: 15%; padding-left: 7%">
+    <div class="col-md-5" style="margin: auto; max-width: 50%">
     <form class="form-signin mg-btm">
         <h3 class="heading-desc">Login with social service</h3>
         <div class="social-box">
@@ -439,30 +461,36 @@
           </div>
         </div>
         <div class="main">
-            <p>The last homework! It's time to crazy!</p>
+            <p>The SECOND SEMESTER IS OVER!!! HELL YA</p>
         </div>
     </form>
     </div>
 </div>
+<div >
 <div class="row">
 <div>
-    <div class="buttons"><div class="gameBtn" id="logout_button">logout</div></div>
+    <div class="col buttons"><div class="gameBtn" id="logout_button" style="display: none">logout</div></div>
 </div>
 <!--<div class="page" id="login">
     <div>
         <div class="buttons"><div class="btn" id="github_login_button">Github 로그인</div></div>
     </div>
 </div>-->
-<div class="page" id="lobby" style="display: none">
+<div class="col" id="lobby" style="display: none">
     <div>
         <div class="buttons"><div class="gameBtn" id="create_room_button">Create</div></div>
     </div>
 </div>
-<div class="page" id="game" style="display: none">
+</div>
+<div class="row">
+<div class="col page" id="game" style="display: none; position: center">
     <div class="dealer-cards"></div>
     <div class="clear"></div>
     <div class="player-cards"></div>
-    <div class="buttons"><div class="gameBtn" id="hit">Hit</div><div class="gameBtn" id="stand">Stand</div></div>
+    <div class="buttons">
+        <div class="gameBtn" id="hit">Hit</div><div class="gameBtn" id="stand">Stand</div>
+        <div class="gameBtn" id="doubledown">DoubleDown</div>
+    </div>
     <div class="buttons"><div class="gameBtn" id="deal">Deal</div></div>
     <div class="betting-area">
         <b>Your Bet</b><br>
@@ -473,11 +501,12 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div>
+<!--    <div>
         <b>Available Funds</b><br>
         <span id="money" class="money"></span>
         <div class="clear"></div>
-    </div>
+    </div>-->
+</div>
 </div>
 </div>
 </div>
@@ -487,6 +516,7 @@
 
 <script>
     var user;
+    var userList;
     var gameRoomId;
 
     $.ajax({
@@ -494,16 +524,20 @@
         url: '/api/users/myself',
         contentType:'application/json;'
     }).done(function(data) {
+        console.log(data);
         if (data && data.name) {
             $('#socialLogin').hide();
+            $('body').css({'background-image':'url(/blackjack/playBackground.jpeg)'});
+            $('#backdore').show();
+            $('#logout_button').show();
             $('#lobby').show();
             user = data;
+            $('username').html(user.name);
         }
     });
 
     $('#naver_login_button').click(function() {
         location.href = '/login/naver'
-        $('body').css('background-image','url(/blackjack/playBackground.jpeg)');
     })
 
     $('#github_login_button').click(function() {
@@ -541,6 +575,7 @@
     })
 
     $('#hit').click(function() {
+        var bet = parseInt($('#bet').html());
         $.ajax({
             type: 'POST',
             url: '/api/black-jack/rooms/' + gameRoomId + '/hit',
@@ -624,7 +659,7 @@
             $('.dealer-cards').append(generateCardDiv(card.rank, card.suit));
         })
         if (gameRoom.dealer.hand.cardList.length == 1) {
-            $('.dealer-cards').append('<div class="card card2 flipped" data-value="6"></div>');
+            $('.dealer-cards').append('<div class="blackcard blackcard2 flipped" data-value="6"></div>');
         }
         if (gameRoom.dealer.hand.cardList.length > 0) {
             $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>')
@@ -639,7 +674,8 @@
         }
 
         $('#bet').html(gameRoom.playerList[user.name].currentBet);
-        $('#money').html(gameRoom.playerList[user.name].balance);
+        $('#username').html(user.name);
+        $('#balance').html(gameRoom.playerList[user.name].balance);
     }
 
     function generateCardDiv(rank, suit) {
@@ -687,7 +723,7 @@
         }
         className += suit.toLowerCase();
 
-        return "<div class='card " + className + "' data-value='" + rank +"'></div>";
+        return "<div class='blackcard " + className + "' data-value='" + rank +"'></div>";
     }
 </script>
 </html>
