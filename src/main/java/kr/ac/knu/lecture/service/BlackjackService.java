@@ -50,6 +50,11 @@ public class BlackjackService {
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.reset();
+
+        if(bet > 10000){
+            bet = 10000;
+        }
+
         gameRoom.bet(user.getName(), bet);
         gameRoom.deal();
 

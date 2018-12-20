@@ -48,9 +48,6 @@ public class GameRoom {
 
     public void bet(String name, long bet) {
         Player player = playerList.get(name);
-        if (bet > 10000) {
-            bet = 10000;
-        }
         player.placeBet(bet);
     }
 
