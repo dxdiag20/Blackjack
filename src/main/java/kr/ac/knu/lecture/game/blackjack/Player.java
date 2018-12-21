@@ -28,15 +28,18 @@ public class Player {
         isPlaying = false;
     }
 
-    public void placeBet(long bet) {
+    public void placeBet(long bet, boolean isDoubleDown) {
         if (balance < bet) {
             //throw new NotEnoughBalanceException();
             bet = balance;
         }
         balance -= bet;
-        currentBet = bet;
-
         isPlaying = true;
+        if (!isDoubleDown) {
+            currentBet = bet;
+            return;
+        }
+        currentBet += bet;
     }
 
     public void deal() {
@@ -46,12 +49,12 @@ public class Player {
 
     public void win(double rate) {
         balance += currentBet * rate;
-        System.out.println("winning = [" + currentBet * rate + "]");
+        System.out.println("win");
     }
 
     public void tie() {
         balance += currentBet;
-        System.out.println("tie = [" + currentBet + "]");
+        System.out.println("tie");
     }
 
     public void lost() {

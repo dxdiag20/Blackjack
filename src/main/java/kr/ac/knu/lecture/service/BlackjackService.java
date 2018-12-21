@@ -47,6 +47,7 @@ public class BlackjackService {
     }
 
     public GameRoom bet(String roomId, User user, long bet) {
+        boolean isDoubleDown = false;
         GameRoom gameRoom = gameRoomMap.get(roomId);
 
         gameRoom.reset();
@@ -55,7 +56,7 @@ public class BlackjackService {
             bet = 10000;
         }
 
-        gameRoom.bet(user.getName(), bet);
+        gameRoom.bet(user.getName(), bet, isDoubleDown);
         gameRoom.deal();
 
         return gameRoom;
@@ -63,7 +64,6 @@ public class BlackjackService {
 
     public GameRoom hit(String roomId, User user) {
         GameRoom gameRoom = gameRoomMap.get(roomId);
-
         gameRoom.hit(user.getName());
 
         updateGameResult(gameRoom);
@@ -99,9 +99,13 @@ public class BlackjackService {
         return gameRoom;
     }
 
-    public GameRoom doubleDown(String roomId, User user) {
+    public GameRoom doubleDown(String roomId, User user, long bet) {
+        boolean isDoubleDown = true;
         GameRoom gameRoom = gameRoomMap.get(roomId);
-
+        if (bet*2 > 10000) {
+            bet = 10000 - bet;
+        }
+        gameRoom.bet(user.getName(), bet, isDoubleDown);
         gameRoom.hit(user.getName());
         gameRoom.stand(user.getName());
         gameRoom.playDealer();
