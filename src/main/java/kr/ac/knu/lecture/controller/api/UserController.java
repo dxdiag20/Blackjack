@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by rokim on 2018. 11. 30..
@@ -23,9 +24,11 @@ public class UserController {
     private UserRepository userRepository;
 
     @GetMapping("/myself")
-    public User getMyself(@AuthenticationPrincipal User user) {
+    public Optional<User> getMyself(@AuthenticationPrincipal User user) {
         log.info("{}", user);
-        return user;
+        Optional<User> playUser = userRepository.findById(user.getName());
+        System.out.println("user = [" + playUser + "]");
+        return playUser;
     }
     @GetMapping("/userlists")
     public List<User> getUserLists() {
