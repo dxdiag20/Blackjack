@@ -42,7 +42,10 @@ public class Player {
             currentBet = bet;
             return;
         }
-        currentBet += bet;
+        if(isPlaying){
+            currentBet += bet;
+        }
+        currentBet -= bet;
     }
 
     public void deal() {
