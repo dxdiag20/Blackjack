@@ -16,6 +16,8 @@ public class Player {
     @Getter
     private long previousBet;
     @Getter
+    private boolean isDoubleDown;
+    @Getter
     private boolean isPlaying;
     @Getter
     private Hand hand;
@@ -38,6 +40,7 @@ public class Player {
             //throw new NotEnoughBalanceException();
             bet = balance;
         }
+        this.isDoubleDown = isDoubleDown;
         previousBet = bet;
         balance -= bet;
         isPlaying = true;
@@ -75,7 +78,10 @@ public class Player {
 
     public void stand() {
         this.isPlaying = false;
-        currentBet -= previousBet;
+
+        if(isDoubleDown){
+            currentBet -= previousBet;
+        }
     }
 
 }
