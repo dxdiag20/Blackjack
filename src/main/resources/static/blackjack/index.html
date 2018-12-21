@@ -199,6 +199,7 @@
             url: '/api/black-jack/rooms/' + gameRoomId + '/charge',
         }).done(function(data) {
             drawGameRoom(data);
+            $('#result').hide();
         });
     })
 
