@@ -48,6 +48,13 @@ public class BlackjackApiController {
         return blackjackService.hit(roomId, currentUser);
     }
 
+    @PostMapping("/rooms/{roomId}/charge")
+    public GameRoom charge(@AuthenticationPrincipal User user, @PathVariable String roomId) {
+        User currentUser = userRepository.getOne(user.getName());
+
+        return blackjackService.charge(roomId, currentUser);
+    }
+
     @PostMapping(value = "/rooms/{roomId}/doubledown", consumes = MediaType.APPLICATION_JSON_VALUE)
     public GameRoom doubleDown(@AuthenticationPrincipal User user, @PathVariable String roomId, @RequestBody long betMoney) {
         User currentUser = userRepository.getOne(user.getName());
