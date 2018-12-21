@@ -88,8 +88,6 @@ public class BlackjackService {
 
                 userRepository.save(playUser);
             });
-
-            System.out.println("userList"+userRepository.findAll());
         }
     }
 
@@ -98,6 +96,17 @@ public class BlackjackService {
         Deck deck = gameRoom.getDeck();
         deck.addNextCard(rank);
 
+        return gameRoom;
+    }
+
+    public GameRoom doubleDown(String roomId, User user) {
+        GameRoom gameRoom = gameRoomMap.get(roomId);
+
+        gameRoom.hit(user.getName());
+        gameRoom.stand(user.getName());
+        gameRoom.playDealer();
+
+        updateGameResult(gameRoom);
         return gameRoom;
     }
 }
