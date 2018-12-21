@@ -42,7 +42,7 @@ public class Hand {
     }
 
     public int setAceValue(int cardSum, AtomicInteger numberOfAce) {
-        if(numberOfAce.get() == 0 || cardSum < 21) {
+        if(numberOfAce.get() == 0 || cardSum <= 21) {
             return cardSum;
         }
         return cardSum - numberOfAce.get()*11 + numberOfAce.get()*1;
