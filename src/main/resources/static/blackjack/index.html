@@ -97,7 +97,7 @@
                     <div class="clear"></div>
                     <div class="player-cards"></div>
                 </div>
-                <div class="col">
+                <div class="col" style="margin-top: 6%">
                     <div class="buttons">
                         <button type="button" class="btn btn-danger" style="margin-right: 5px" id="hit">Hit</button>
                         <button type="button" class="btn btn-danger" style="margin-right: 5px" id="stand">Stand</button>
@@ -116,6 +116,8 @@
                         <div class="clear"></div>
                     </div>
                 </div>
+            </div>
+            <div class="row" style="position: center" id="result">
             </div>
         </main>
     </div>
@@ -187,7 +189,6 @@
 
     $('#deal').click(function() {
         var bet = parseInt($('#bet').html());
-
         $.ajax({
             type: 'POST',
             url: '/api/black-jack/rooms/' + gameRoomId + '/bet',
@@ -278,6 +279,7 @@
             $('#hit').hide();
             $('#stand').hide();
             $('#doubledown').hide();
+            $('#result').show();
         } else {
             $('#deal').hide();
             $('#more').hide();
@@ -285,6 +287,7 @@
             $('#hit').show();
             $('#stand').show();
             $('#doubledown').show();
+            $('#result').hide();
         }
 
         $('#nextCards').html("");
@@ -318,6 +321,17 @@
         $('#username').html('Username: '+user.name);
         $('#balance').html('Balance: '+gameRoom.playerList[user.name].balance);
         $('#userlists').html('');
+
+        $('#result').html('');
+        if (gameRoom.playerList[user.name].result == 0) {
+            $('#result').append("<h1 class='text-info'>"+WIN+"</h1>");
+        } else if( gameRoom.playerList[user.name].result == 1){
+            $('#result').append("<h1 class='text-danger'>"+LOOSE+"</h1>");
+        } else if( gameRoom.playerList[user.name].result == 2){
+            $('#result').append("<h1 class='text-secondary'>"+TIE+"</h1>");
+        }
+        console.log(gameRoom.playerList[user.name].result);
+
         $.ajax({
             type: 'GET',
             url: '/api/users/userlists',
