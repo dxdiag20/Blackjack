@@ -41,16 +41,16 @@
     </div>
 </div>
 
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" id="top-nav">
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" id="top-nav" style="display: none;">
     <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="#">1Jo BlackJack</a>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" id="username">Sign out</a>
+            <a class="nav-link" id="username"></a>
         </li>
     </ul>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" id="balance">Sign out</a>
+            <a class="nav-link" id="balance"></a>
         </li>
     </ul>
     <ul class="navbar-nav px-3">
@@ -60,16 +60,16 @@
     </ul>
 </nav>
 
-<div class="container-fluid" id="top-div">
+<div class="container-fluid" style="display: none;" id="top-div">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                   <li class="nav-item">
-                <h1 class="nav-link">
-                    Ranking
-                </h1>
-              </li>  
+                    <h1 class="nav-link">
+                        Ranking
+                    </h1>
+                    </li>  
                 </ul>                
                 <ul class="nav flex-column" id="userlists">
                 </ul>
@@ -93,32 +93,32 @@
             </div>
             <div class="row page" id="game" style="display: none; position: center">
                 <div class="col">
-                <div class="dealer-cards"></div>
-                <div class="clear"></div>
-                <div class="player-cards"></div>
-            </div>
-            <div class="col">
-                <div class="buttons">
-                    <button type="button" class="btn btn-danger" style="margin-right: 15px" id="hit">Hit</button>
-                    <button type="button" class="btn btn-danger" style="margin-right: 15px" id="stand">Stand</button>
-                    <button type="button" class="btn btn-danger" id="doubledown">DoubleDown</button>
-                </div>
-                <div class="buttons">
-                    <button type="button" class="btn btn-danger" id="deal">Deal</button>
-                </div>
-                <div class="betting-area">
-                    <b>Your Bet</b><br>
-                    <div id="bet" class="bet money">0</div>
-                    <div class="buttons">
-                        <button type="button" class="btn btn-danger" style="margin-right: 15px" id="more">+</button>
-                        <button type="button" class="btn btn-danger" id="less">-</button>
-                    </div>
+                    <div class="dealer-cards"></div>
                     <div class="clear"></div>
+                    <div class="player-cards"></div>
+                </div>
+                <div class="col">
+                    <div class="buttons">
+                        <button type="button" class="btn btn-danger" style="margin-right: 5px" id="hit">Hit</button>
+                        <button type="button" class="btn btn-danger" style="margin-right: 5px" id="stand">Stand</button>
+                        <button type="button" class="btn btn-danger" id="doubledown">DoubleDown</button>
+                    </div>
+                    <div class="buttons">
+                        <button type="button" class="btn btn-danger" id="deal">Deal</button>
+                    </div>
+                    <div class="betting-area">
+                        <b>Your Bet</b><br>
+                        <div id="bet" class="bet money">0</div>
+                        <div class="buttons">
+                            <button type="button" class="btn btn-danger" style="margin-right: 5px" id="more">+</button>
+                            <button type="button" class="btn btn-danger" id="less">-</button>
+                        </div>
+                        <div class="clear"></div>
+                    </div>
                 </div>
             </div>
+        </main>
     </div>
-    </main>
-</div>
 </div>
 
 </body>
@@ -140,7 +140,6 @@
 
 <script>
     var user;
-    var userList;
     var gameRoomId;
 
     $.ajax({
@@ -151,28 +150,13 @@
         if (data && data.name) {
             user = data;
             $('#socialLogin').hide();
-            //$('body').css({'background-image':'url(/blackjack/playBackground.jpeg)'});
-            $('top-nav').show();
-            $('top-div').show();
+            $('body').css({'background-image':''});
+            $('#top-nav').show();
+            $('#top-div').show();
             $('#backdore').show();
             $('#logout_button').show();
             $('#lobby').show();
             $('username').html(user.name);
-        }
-    });
-    $.ajax({
-        type: 'GET',
-        url: '/api/users/userlists',
-        contentType:'application/json;'
-    }).done(function(data) {
-        if (data) {
-            userList = data;
-            $.each(data, function (index, user) {
-                var eachrow = "<li class='nav-item'>"
-                +"<a class='nav-link'>"+(index+1)+'위 '+
-                user.name+', '+user.account+"</a>"+ "</li>";
-                $('#userlists').append(eachrow);
-            });
         }
     });
 
@@ -202,16 +186,16 @@
     })
 
     $('#deal').click(function() {
-            var bet = parseInt($('#bet').html());
+        var bet = parseInt($('#bet').html());
 
-            $.ajax({
-                type: 'POST',
-                url: '/api/black-jack/rooms/' + gameRoomId + '/bet',
-                data: JSON.stringify(bet),
-                contentType:'application/json;',
-            }).done(function(data) {
-                drawGameRoom(data);
-            });
+        $.ajax({
+            type: 'POST',
+            url: '/api/black-jack/rooms/' + gameRoomId + '/bet',
+            data: JSON.stringify(bet),
+            contentType:'application/json;',
+        }).done(function(data) {
+            drawGameRoom(data);
+        });
     })
 
     $('#hit').click(function() {
@@ -225,7 +209,7 @@
     })
 
     $('#doubledown').click(function() {
-        var bet = parseInt($('#bet').html())*2;
+        var bet = parseInt($('#bet').html());
         $.ajax({
             type: 'POST',
             url: '/api/black-jack/rooms/' + gameRoomId + '/doubledown',
@@ -262,123 +246,140 @@
     $('#more').click(function(){
     var bet = 1000;
     var currentBet = parseInt($('#bet').html());
-            var money = parseInt($('#money').html());
-            if (money < bet) {
-                bet = money;
-            }
-            if (currentBet + bet > 10000) {
-                $('#bet').html(10000);
-            } else {
-                $('#bet').html(currentBet + bet);
-                $('#money').html(money - bet);
-            }        
-        });        
+        var money = parseInt($('#money').html());
+        if (money < bet) {
+            bet = money;
+        }
+        if (currentBet + bet > 10000) {
+            $('#bet').html(10000);
+        } else {
+            $('#bet').html(currentBet + bet);
+            $('#money').html(money - bet);
+        }        
+    });        
 
-        $('#less').click(function(){
-            var bet = 1000;
-            var currentBet = parseInt($('#bet').html());
-            var money = parseInt($('#money').html());
-            if(currentBet < bet) {
-                bet = currentBet;
-            }
+    $('#less').click(function(){
+        var bet = 1000;
+        var currentBet = parseInt($('#bet').html());
+        var money = parseInt($('#money').html());
+        if(currentBet < bet) {
+            bet = currentBet;
+        }
 
-            $('#bet').html(currentBet - bet);
-            $('#money').html(money + bet);
+        $('#bet').html(currentBet - bet);
+        $('#money').html(money + bet);
+    });
+
+    function drawGameRoom(gameRoom) {
+        if (gameRoom.finished) {
+            $('#deal').show();
+            $('#more').show();
+            $('#less').show();
+            $('#hit').hide();
+            $('#stand').hide();
+            $('#doubledown').hide();
+        } else {
+            $('#deal').hide();
+            $('#more').hide();
+            $('#less').hide();
+            $('#hit').show();
+            $('#stand').show();
+            $('#doubledown').show();
+        }
+
+        $('#nextCards').html("");
+        gameRoom.deck.cardList.forEach(function(card) {
+            $('#nextCards').append(card.rank + ", ");
+        })
+
+        $('.dealer-cards').html("");
+        gameRoom.dealer.hand.cardList.forEach(function(card) {
+            $('.dealer-cards').append(generateCardDiv(card.rank, card.suit));
+        })
+        if (gameRoom.dealer.hand.cardList.length == 1) {
+            $('.dealer-cards').append('<div class="blackcard blackcard2 flipped" data-value="6"></div>');
+        }
+        if (gameRoom.dealer.hand.cardList.length > 0) {
+            $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>')
+        }
+
+        $('.player-cards').html("");
+        gameRoom.playerList[user.name].hand.cardList.forEach(function(card) {
+            $('.player-cards').append(generateCardDiv(card.rank, card.suit));
         });
-
-        function drawGameRoom(gameRoom) {
-            if (gameRoom.finished) {
-                $('#deal').show();
-                $('#more').show();
-                $('#less').show();
-                $('#hit').hide();
-                $('#stand').hide();
-                $('#doubledown').hide();
-            } else {
-                $('#deal').hide();
-                $('#more').hide();
-                $('#less').hide();
-                $('#hit').show();
-                $('#stand').show();
-                $('#doubledown').show();
-            }
-
-            $('#nextCards').html("");
-            gameRoom.deck.cardList.forEach(function(card) {
-                $('#nextCards').append(card.rank + ", ");
-            })
-
-            $('.dealer-cards').html("");
-            gameRoom.dealer.hand.cardList.forEach(function(card) {
-                $('.dealer-cards').append(generateCardDiv(card.rank, card.suit));
-            })
-            if (gameRoom.dealer.hand.cardList.length == 1) {
-                $('.dealer-cards').append('<div class="blackcard blackcard2 flipped" data-value="6"></div>');
-            }
-            if (gameRoom.dealer.hand.cardList.length > 0) {
-                $('.dealer-cards').append('<div id="dealerTotal" class="dealer-total">' + gameRoom.dealer.hand.cardSum + '</div>')
-            }
-
-            $('.player-cards').html("");
-            gameRoom.playerList[user.name].hand.cardList.forEach(function(card) {
-                $('.player-cards').append(generateCardDiv(card.rank, card.suit));
-            });
-            if (gameRoom.playerList[user.name].hand.cardList.length > 0) {
-                $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>')
-            }
-
+        if (gameRoom.playerList[user.name].hand.cardList.length > 0) {
+            $('.player-cards').append('<div id="playerTotal" class="player-total">' + gameRoom.playerList[user.name].hand.cardSum + '</div>')
+        }
+        if ($('#bet').html(gameRoom.playerList[user.name].currentBet) > 10000) {
+            $('#bet').html(0);
+        } else {
             $('#bet').html(gameRoom.playerList[user.name].currentBet);
-            $('#username').html(user.name);
-            $('#balance').html(gameRoom.playerList[user.name].balance);
         }
-
-        function generateCardDiv(rank, suit) {
-            var className = "";
-            switch (rank) {
-                case 1 :
-                className = "ace-of-";
-                break;
-                case 2:
-                className = "two-of-";
-                break;
-                case 3 :
-                className = "three-of-";
-                break;
-                case 4 :
-                className = "four-of-";
-                break;
-                case 5 :
-                className = "five-of-";
-                break;
-                case 6 :
-                className = "six-of-";
-                break;
-                case 7 :
-                className = "seven-of-";
-                break;
-                case 8 :
-                className = "eight-of-";
-                break;
-                case 9 :
-                className = "nine-of-";
-                break;
-                case 10 :
-                className = "ten-of-";
-                break;
-                case 11 :
-                className = "jack-of-";
-                break;
-                case 12 :
-                className = "queen-of-";
-                break;
-                case 13 :
-                className = "king-of-";
-                break;
+        $('#username').html('Username: '+user.name);
+        $('#balance').html('Balance: '+gameRoom.playerList[user.name].balance);
+        $('#userlists').html('');
+        $.ajax({
+            type: 'GET',
+            url: '/api/users/userlists',
+            contentType:'application/json;'
+        }).done(function(data) {
+            $('#userlists').html('');
+            if (data) {
+                $.each(data, function (index, user) {
+                var eachrow = "<li class='nav-item'>"
+                +"<a class='nav-link'>"+(index+1)+'위 '+user.name+', '+user.account+"</a>"+ "</li>";
+                $('#userlists').append(eachrow);
+                });
             }
-            className += suit.toLowerCase();
+        });
+    }
 
-            return "<div class='blackcard " + className + "' data-value='" + rank +"'></div>";
+    function generateCardDiv(rank, suit) {
+        var className = "";
+        switch (rank) {
+            case 1 :
+            className = "ace-of-";
+            break;
+            case 2:
+            className = "two-of-";
+            break;
+            case 3 :
+            className = "three-of-";
+            break;
+            case 4 :
+            className = "four-of-";
+            break;
+            case 5 :
+            className = "five-of-";
+            break;
+            case 6 :
+            className = "six-of-";
+            break;
+            case 7 :
+            className = "seven-of-";
+            break;
+            case 8 :
+            className = "eight-of-";
+            break;
+            case 9 :
+            className = "nine-of-";
+            break;
+            case 10 :
+            className = "ten-of-";
+            break;
+            case 11 :
+            className = "jack-of-";
+            break;
+            case 12 :
+            className = "queen-of-";
+            break;
+            case 13 :
+            className = "king-of-";
+            break;
         }
+        className += suit.toLowerCase();
 
+        return "<div class='blackcard " + className + "' data-value='" + rank +"'></div>";
+    }
 </script>
 </html>
