@@ -324,9 +324,9 @@
         if (gameRoom.playerList[user.name].result == 0) {
             $('#result').append("<h1 class='text-info' style='margin-left: 20%'>"+'WIN'+"</h1>");
         } else if( gameRoom.playerList[user.name].result == 1){
-            $('#result').append("<h1 class='text-danger style='margin-left: 20%'>"+'LOOSE'+"</h1>");
+            $('#result').append("<h1 class='text-danger' style='margin-left: 20%'>"+'LOOSE'+"</h1>");
         } else if( gameRoom.playerList[user.name].result == 2){
-            $('#result').append("<h1 class='text-secondary style='margin-left: 20%'>"+'TIE'+"</h1>");
+            $('#result').append("<h1 class='text-secondary' style='margin-left: 20%'>"+'TIE'+"</h1>");
         }
 
         $.ajax({
