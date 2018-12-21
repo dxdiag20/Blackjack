@@ -79,4 +79,14 @@ public class GameRoom {
         evaluator.evaluate();
         this.isFinished = true;
     }
+
+    public void charge(String name) {
+        Player player = playerList.get(name);
+        player.setBalance(player.getBalance() + 50000L);
+    }
+
+    public boolean isBalanceEnough(String name) {
+        Player player = playerList.get(name);
+        return player.getBalance() > 0;
+    }
 }
