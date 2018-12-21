@@ -27,7 +27,6 @@ public class UserController {
     public Optional<User> getMyself(@AuthenticationPrincipal User user) {
         log.info("{}", user);
         Optional<User> playUser = userRepository.findById(user.getName());
-        System.out.println("user = [" + playUser + "]");
         return playUser;
     }
     @GetMapping("/userlists")
