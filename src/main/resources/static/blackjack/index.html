@@ -55,6 +55,11 @@
     </ul>
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
+            <a class="nav-link" id="charge_button">Charge</a>
+        </li>
+    </ul>
+    <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
             <a class="nav-link" id="logout_button">Sign out</a>
         </li>
     </ul>
@@ -117,7 +122,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row" style="position: center" id="result">
+            <div class="row" style="position: center; display: none;" id="result">
             </div>
         </main>
     </div>
@@ -156,7 +161,8 @@
             $('#backdore').show();
             $('#logout_button').show();
             $('#lobby').show();
-            $('username').html(user.name);
+            $('#username').html('Username: '+user.name);
+            $('#balance').html('Balance: '+user.name);
         }
     });
 
@@ -179,8 +185,18 @@
         }).done(function(data) {
             $('#login').hide();
             $('#lobby').hide();
+            $('#result').hide();
             $('#game').show();
             gameRoomId = data.roomId;
+            drawGameRoom(data);
+        });
+    })
+
+    $('#charge_button').click(function() {
+        $.ajax({
+            type: 'POST',
+            url: '/api/black-jack/rooms/' + gameRoomId + '/charge',
+        }).done(function(data) {
             drawGameRoom(data);
         });
     })
@@ -204,6 +220,10 @@
             url: '/api/black-jack/rooms/' + gameRoomId + '/hit',
         }).done(function(data) {
             drawGameRoom(data);
+        }).fail(function(event) {
+            $('#result').html('');
+            $('#result').show();
+            $('#result').append("<h1 class='text-danger' style='margin-left: 20%'>"+'Not Enough Balance'+"</h1>");
         });
     })
 
@@ -216,23 +236,28 @@
             contentType:'application/json;',
         }).done(function(data) {
             drawGameRoom(data);
+        }).fail(function(event) {
+            $('#result').html('');
+            $('#result').show();
+            $('#result').append("<h1 class='text-danger' style='margin-left: 20%'>"+'Not Enough Balance'+"</h1>");
         });
     })
 
     $('#nextCardInput').keypress(function(event) {
     //console.log(event);
-    if (event.which != 13) {
-        return;
-    }
-    $.ajax({
-        type: 'PUT',
-        url: '/api/black-jack/rooms/' + gameRoomId + '/deck/cards',
-        data: JSON.stringify(event.target.value),
-        contentType: 'application/json;',
-    }).done(function (data) {
-        drawGameRoom(data);
+        if (event.which != 13) {
+            return;
+        }
+        $.ajax({
+            type: 'PUT',
+            url: '/api/black-jack/rooms/' + gameRoomId + '/deck/cards',
+            data: JSON.stringify(event.target.value),
+            contentType: 'application/json;',
+        }).done(function (data) {
+            drawGameRoom(data);
         });
     })
+
     $('#stand').click(function() {
         $.ajax({
             type: 'POST',
