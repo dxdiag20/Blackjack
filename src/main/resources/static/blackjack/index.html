@@ -43,6 +43,7 @@
 
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" id="top-nav" style="display: none;">
     <a class="navbar-brand col-sm-6 col-md-2 mr-0" href="#">1Jo BlackJack</a>
+    <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
             <a class="nav-link" id="username"></a>
@@ -161,8 +162,8 @@
             $('#backdore').show();
             $('#logout_button').show();
             $('#lobby').show();
-            $('#username').html('Username: '+user.name);
-            $('#balance').html('Balance: '+user.name);
+            $('#username').html(user.name);
+            $('#balance').html(user.account);
         }
     });
 
@@ -341,8 +342,8 @@
         } else {
             $('#bet').html(gameRoom.playerList[user.name].currentBet);
         }
-        $('#username').html('Username: '+user.name);
-        $('#balance').html('Balance: '+gameRoom.playerList[user.name].balance);
+        $('#username').html(user.name);
+        $('#balance').html(gameRoom.playerList[user.name].balance);
         $('#userlists').html('');
 
         $('#result').html('');
