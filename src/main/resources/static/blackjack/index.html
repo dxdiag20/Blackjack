@@ -136,8 +136,6 @@
 <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
 <script>
     feather.replace()
-
-
 </script>
 
 <script>
@@ -324,13 +322,12 @@
 
         $('#result').html('');
         if (gameRoom.playerList[user.name].result == 0) {
-            $('#result').append("<h1 class='text-info'>"+WIN+"</h1>");
+            $('#result').append("<h1 class='text-info' style='margin-left: 20%'>"+'WIN'+"</h1>");
         } else if( gameRoom.playerList[user.name].result == 1){
-            $('#result').append("<h1 class='text-danger'>"+LOOSE+"</h1>");
+            $('#result').append("<h1 class='text-danger style='margin-left: 20%'>"+'LOOSE'+"</h1>");
         } else if( gameRoom.playerList[user.name].result == 2){
-            $('#result').append("<h1 class='text-secondary'>"+TIE+"</h1>");
+            $('#result').append("<h1 class='text-secondary style='margin-left: 20%'>"+'TIE'+"</h1>");
         }
-        console.log(gameRoom.playerList[user.name].result);
 
         $.ajax({
             type: 'GET',
