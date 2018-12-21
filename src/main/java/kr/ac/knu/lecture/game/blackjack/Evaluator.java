@@ -8,7 +8,6 @@ import java.util.Map;
 public class Evaluator {
     private Map<String, Player> playerMap;
     private Dealer dealer;
-
     public Evaluator(Map<String, Player> playerMap, Dealer dealer) {
         this.playerMap = playerMap;
         this.dealer = dealer;
@@ -33,8 +32,6 @@ public class Evaluator {
                     player.lost();
                 }
             });
-
-            return true;
         } else {
             playerMap.forEach((s, player) -> {
                 int playerResult = player.getHand().getCardSum();
@@ -51,7 +48,6 @@ public class Evaluator {
                 }
             });
         }
-
         return true;
     }
 

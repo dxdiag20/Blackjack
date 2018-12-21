@@ -15,7 +15,8 @@ public class Player {
     private boolean isPlaying;
     @Getter
     private Hand hand;
-
+    @Getter
+    private Result result;
     public Player(long seedMoney, Hand hand) {
         this.balance = seedMoney;
         this.hand = hand;
@@ -49,16 +50,16 @@ public class Player {
 
     public void win(double rate) {
         balance += currentBet * rate;
-        System.out.println("win");
+        result = Result.WIN;
     }
 
     public void tie() {
         balance += currentBet;
-        System.out.println("tie");
+        result = Result.TIE;
     }
 
     public void lost() {
-        System.out.println("lost");
+        result = Result.LOOSE;
     }
 
     public Card hitCard() {
