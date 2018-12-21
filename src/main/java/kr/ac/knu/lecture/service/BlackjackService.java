@@ -1,6 +1,7 @@
 package kr.ac.knu.lecture.service;
 
 import kr.ac.knu.lecture.domain.User;
+import kr.ac.knu.lecture.exception.NotEnoughBalanceException;
 import kr.ac.knu.lecture.game.blackjack.Deck;
 import kr.ac.knu.lecture.game.blackjack.Evaluator;
 import kr.ac.knu.lecture.game.blackjack.GameRoom;
@@ -64,6 +65,9 @@ public class BlackjackService {
 
     public GameRoom hit(String roomId, User user) {
         GameRoom gameRoom = gameRoomMap.get(roomId);
+        if(!gameRoom.isBalanceEnough(user.getName())) {
+            throw new NotEnoughBalanceException();
+        }
         gameRoom.hit(user.getName());
 
         updateGameResult(gameRoom);
@@ -102,6 +106,11 @@ public class BlackjackService {
     public GameRoom doubleDown(String roomId, User user, long bet) {
         boolean isDoubleDown = true;
         GameRoom gameRoom = gameRoomMap.get(roomId);
+
+        if(!gameRoom.isBalanceEnough(user.getName())) {
+            throw new NotEnoughBalanceException();
+        }
+
         if (bet*2 > 10000) {
             bet = 10000 - bet;
         }
@@ -110,6 +119,14 @@ public class BlackjackService {
         gameRoom.stand(user.getName());
         gameRoom.playDealer();
 
+        updateGameResult(gameRoom);
+        return gameRoom;
+    }
+
+    public GameRoom charge(String roomId, User user) {
+        GameRoom gameRoom = gameRoomMap.get(roomId);
+
+        gameRoom.charge(user.getName());
         updateGameResult(gameRoom);
         return gameRoom;
     }
