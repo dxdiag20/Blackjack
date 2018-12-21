@@ -186,10 +186,10 @@
         }).done(function(data) {
             $('#login').hide();
             $('#lobby').hide();
-            $('#result').hide();
             $('#game').show();
             gameRoomId = data.roomId;
             drawGameRoom(data);
+            $('#result').hide();
         });
     })
 
